@@ -63,7 +63,7 @@ const displayWords = words => {
                         <h2 class="text-[32px] font-semibold font-bangla text-[#18181B]">${word.meaning ?? "অর্থ পাওয়া যায়নি"} | ${word.pronunciation ?? "উচ্চারণ পাওয়া যায়নি"}</h2>
                     </div>
                     <div class="flex justify-between ml-5 mr-5">
-                        <button class="btn border-0 bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-circle-info"></i></button>
+                        <button onclick="loadWordDetails(${word.id})" class="btn border-0 bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-circle-info"></i></button>
                         <button class="btn border-0 bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-volume-high"></i></button>
                     </div>
                 </div>
@@ -80,6 +80,63 @@ const removeClickedClass = () => {
         btn.classList.remove("clicked");
     }
 };
+
+const loadWordDetails = (id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(jsonData => displayWordDetails(jsonData.data))
+        .catch(error => console.error("Error loading word details:", error));
+}
+
+const displayWordDetails = (word) => {
+    const detailsContainer = document.getElementById('details-container');
+    detailsContainer.innerHTML = `
+    <div id="details-container" class="space-y-6 p-4">
+  <div>
+  <h2 class="font-semibold text-3xl md:text-4xl text-black">
+    ${word.word ?? "শব্দ পাওয়া যায়নি।"}
+    <span class="text-3xl md:text-4xl text-black">
+      (<i class="fa-solid fa-microphone-lines"></i>: ${word.pronunciation})
+    </span>
+  </h2>
+</div>
+
+
+  <div>
+    <p class="font-semibold text-xl md:text-2xl">Meaning</p>
+    <p class="font-bangla text-base md:text-lg">${word.meaning ?? "অর্থ পাওয়া যায়নি"}</p>
+  </div>
+
+  <div>
+    <h2 class="font-semibold text-xl md:text-2xl">Example</h2>
+    <p class="text-lg md:text-2xl text-gray-700">${word.sentence}</p>
+  </div>
+
+  <div>
+    <h2 class="font-bangla text-xl md:text-2xl font-semibold mb-3">সমার্থক শব্দ গুলো</h2>
+    <div id="synonyms-card" class="flex flex-wrap gap-3">
+      ${displaySynonyms(word.synonyms)}
+    </div>
+  </div>
+</div>
+    `;
+    document.getElementById('my_modal_2').showModal();
+}
+
+const displaySynonyms = (synonyms) => {
+    if (synonyms.length === 0) {
+        return `<span class="btn btn-sm md:btn-md bg-blue-100 text-blue-700 border-0 hover:bg-blue-200">কোনো সমার্থক শব্দ পাওয়া যায়নি</span>`;
+    } else {
+        return synonyms.map(synonym => `
+            <span class="btn btn-sm md:btn-md bg-blue-100 text-blue-700 border-0 hover:bg-blue-200">
+                ${synonym}
+            </span>
+        `).join('');
+    }
+};
+
 
 
 loadLessons();
