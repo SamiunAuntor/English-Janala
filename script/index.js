@@ -10,7 +10,12 @@ const loadWords = (level) => {
 
     fetch(url)
         .then(response => response.json())
-        .then(jsonData => displayWords(jsonData.data))
+        .then(jsonData => {
+            removeClickedClass();
+            const btnClicked = document.getElementById(`lesson-btn-${level}`);
+            btnClicked.classList.add("clicked");
+            displayWords(jsonData.data)
+        })
         .catch(error => console.error("Error loading words:", error));
 }
 
@@ -21,7 +26,7 @@ const displayLessons = lessons => {
     for (const lesson of lessons) {
         const btnDiv = document.createElement('div');
         btnDiv.innerHTML = `
-      <button onclick="loadWords(${lesson.level_no})" class="btn btn-outline btn-primary m-2">
+      <button id="lesson-btn-${lesson.level_no}" onclick="loadWords(${lesson.level_no})" class="btn lesson-btn btn-outline btn-primary m-2">
         <i class="fa-solid fa-book-open"></i> Lesson - ${lesson.level_no}
       </button>
     `;
@@ -47,7 +52,7 @@ const displayWords = words => {
     else {
         const gridContainer = document.createElement('div');
         gridContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full';
-        
+
         for (const word of words) {
             const wordDiv = document.createElement('div');
             wordDiv.innerHTML = `
@@ -68,5 +73,13 @@ const displayWords = words => {
         wordContainer.appendChild(gridContainer);
     }
 }
+
+const removeClickedClass = () => {
+    const buttons = document.getElementsByClassName("lesson-btn");
+    for (const btn of buttons) {
+        btn.classList.remove("clicked");
+    }
+};
+
 
 loadLessons();
