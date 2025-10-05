@@ -6,6 +6,7 @@ const loadLessons = () => {
 };
 
 const loadWords = (level) => {
+    manageLoader(true);
     url = `https://openapi.programming-hero.com/api/level/${level}`;
 
     fetch(url)
@@ -72,6 +73,7 @@ const displayWords = words => {
         }
         wordContainer.appendChild(gridContainer);
     }
+    manageLoader(false);
 }
 
 const removeClickedClass = () => {
@@ -136,6 +138,17 @@ const displaySynonyms = (synonyms) => {
         `).join('');
     }
 };
+
+const manageLoader = (isLoading) => {
+    if (isLoading) {
+        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('word-container').classList.add('hidden');
+    }
+    else {
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('word-container').classList.remove('hidden');
+    }
+}
 
 
 
