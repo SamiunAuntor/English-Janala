@@ -33,6 +33,7 @@ const displayWords = words => {
     const wordContainer = document.getElementById('word-container');
     wordContainer.innerHTML = '';
 
+
     if (words.length === 0) {
         const noDataDiv = document.createElement('div');
         noDataDiv.className = 'flex flex-col justify-center items-center h-full space-y-3';
@@ -44,7 +45,6 @@ const displayWords = words => {
         wordContainer.appendChild(noDataDiv);
     }
     else {
-        // Create a grid container for the word cards
         const gridContainer = document.createElement('div');
         gridContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full';
         
@@ -53,13 +53,13 @@ const displayWords = words => {
             wordDiv.innerHTML = `
                 <div class="bg-white rounded-2xl py-[20px] px-[15px] text-center space-y-4 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col justify-between">
                     <div>
-                        <h2 class="text-[32px] font-bold">${word.word}</h2>
-                        <p class="text-[20px]">Meaning / Pronunciation</p>
-                        <h2 class="text-[32px] font-semibold font-bangla text-[#18181B]">${word.meaning} / ${word.pronunciation}</h2>
+                        <h2 class="text-[32px] font-bold">${word.word ?? "শব্দ পাওয়া যায়নি।"}</h2>
+                        <p class="text-[20px]">Meaning | Pronunciation</p>
+                        <h2 class="text-[32px] font-semibold font-bangla text-[#18181B]">${word.meaning ?? "অর্থ পাওয়া যায়নি"} | ${word.pronunciation ?? "উচ্চারণ পাওয়া যায়নি"}</h2>
                     </div>
-                    <div class="flex justify-between ml-7 mr-7">
-                        <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-circle-info"></i></button>
-                        <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-volume-high"></i></button>
+                    <div class="flex justify-between ml-5 mr-5">
+                        <button class="btn border-0 bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-circle-info"></i></button>
+                        <button class="btn border-0 bg-[#1A91FF10] hover:bg-[#1A91FF20]"><i class="fa-solid fa-volume-high"></i></button>
                     </div>
                 </div>
             `;
@@ -69,5 +69,4 @@ const displayWords = words => {
     }
 }
 
-// load data when page is ready
 loadLessons();
